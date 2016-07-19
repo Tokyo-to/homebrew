@@ -1,10 +1,7 @@
-/*
-	Hello World example made by Aurelio Mannara for ctrulib
-	This code was modified for the last time on: 12/12/2014 21:00 UTC+1
-*/
-
 #include <3ds.h>
 #include <stdio.h>
+#include "img_bin.h"
+
 
 int main(int argc, char **argv)
 {
@@ -32,6 +29,13 @@ int main(int argc, char **argv)
 	//Initialize console on both screens
 	consoleInit(GFX_TOP, &topScreen);
 	consoleInit(GFX_BOTTOM, &bottomScreen);
+
+	u8* fbTopLeft = gfxGetFramebuffer(GFX_TOP, GFX_LEFT, NULL, NULL);
+    u8* fbTopRight = gfxGetFramebuffer(GFX_TOP, GFX_RIGHT, NULL, NULL);
+    u8* fbBottom = gfxGetFramebuffer(GFX_BOTTOM, 0, NULL, NULL);
+    memset(fbTopLeft, 0, 240 * 400 * 3);
+    memset(fbTopRight, 0, 240 * 400 * 3);
+    memset(fbBottom, 0, 240 * 320 * 3);
 
 	u32 kDownOld = 0, kHeldOld = 0, kUpOld = 0; //In these variables there will be information about keys detected in the previous frame
 
@@ -92,6 +96,7 @@ int main(int argc, char **argv)
 			printf("\x1b[29;15HPress Start to exit.");
 
 			consoleSelect(&bottomScreen);
+			drawImage(fbTopLeft, 100, 100, 384, 216, img_bin);
 			printf("\x1b[20;0HThis is just a bottom screen test :)");
 		}
 
